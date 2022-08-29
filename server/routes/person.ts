@@ -1,31 +1,27 @@
 import { FastifyInstance } from "fastify";
-import User from '../models/user.model.t';
 import Person from '../models/person.model.t';
 
-interface userQueryInterface {
-    id : string,
-    firstname : string,
-    lastname : string,
+interface PersonQueryInterface {
+    id ?: string,
+    first_name : string,
+    last_name : string,
     email : string,
-    password : string,
-    pseudo : string
   };
 
 async function userRoutes (router: FastifyInstance) {
 
-    router.post<{Body: userQueryInterface}>('/createUser', async (req, reply) => {
+    router.post<{Body: PersonQueryInterface}>('/createPerson', async (req, reply) => {
         try {
-            const { id, firstname, lastname, email, password, pseudo } = req.body;
-            if (!id || !firstname || !lastname || !email || !password || !pseudo) throw "Missing parameters";
-            const newUser = new User({
-                firstname,
-                lastname, 
+            const { first_name, last_name, email } = req.body;
+            if (!first_name || !last_name || !email) throw "Missing parameters";
+            const newPerson = new Person({
+                id : 4,
+                first_name,
+                last_name, 
                 email,
-                password,
-                pseudo
             });
-            await newUser.save();
-            reply.status(200).send(newUser);
+            await newPerson.save();
+            reply.status(200).send(newPerson);
         } catch (error) {
             console.error(error);
             reply.status(500).send({error: error});
@@ -35,7 +31,7 @@ async function userRoutes (router: FastifyInstance) {
       
       router.get<{Params: {id : string}}>('/get/:id', async (req, reply) => {
         try {
-          const person = await User.findAll({where: {id: req.params.id}});
+          const person = await Person.findAll({where: {id: req.params.id}});
           reply.status(200).send(person);
         } catch (error) {
           console.error(error);
@@ -46,7 +42,7 @@ async function userRoutes (router: FastifyInstance) {
       
       router.get('/get', async (req, reply) => {
         try {
-          const person = await User.findAll();
+          const person = await Person.findAll();
           reply.status(200).send(person);
         } catch (error) {
           console.error(error);
@@ -57,7 +53,7 @@ async function userRoutes (router: FastifyInstance) {
 
       router.delete<{Params: {id : string}}>('/delete/:id', async (req, reply) => {
         try {
-          const person = await User.destroy({where: {id: req.params.id}});
+          const person = await Person.destroy({where: {id: req.params.id}});
           reply.status(200).send(person);
         } catch (error) {
           console.error(error);

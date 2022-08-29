@@ -1,0 +1,37 @@
+<div class="whole">
+    <div class="grid p-fluid login-box bg-primary-reverse p-2">
+
+        <h1>Connexion</h1>
+
+        <h5>Addresse email</h5>
+
+        <div class="md:col-4">
+            <div class="p-inputgroup">
+                <span class="p-inputgroup-addon"><i class="pi pi-at"></i></span>
+                <input type="text" pInputText placeholder="Email">         
+            </div>
+        </div>
+
+        <h5>Mot de passe</h5>
+
+        <p-password [(ngModel)]="password" [toggleMask]="true" placeholder="Mot de passe">
+            <ng-template pTemplate="header">
+                <h6>Entrez votre mot de passe</h6>
+            </ng-template>
+            <ng-template pTemplate="footer">
+                <p-divider></p-divider>
+                <p class="mt-2">Il doit contenir Au moins :</p>
+                <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                    <li>1 minuscule</li>
+                    <li>1 majuscule</li>
+                    <li>1 minuscule</li>
+                    <li>8 caracteres</li>
+                </ul>
+            </ng-template>
+        </p-password>
+
+        <button pButton pRipple type="button" label="Se connecter" class="p-button-rounded mt-5"></button>
+    </div>  
+    <p class="text-300" [routerLink]="['/register']">Pas de compte ? S'inscrire !</p>
+    <a [routerLink]="['/password-lost']">Mot de passe oublié ?</a>
+</div>

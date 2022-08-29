@@ -1,6 +1,7 @@
 import fastify from 'fastify';
 import { Sequelize } from 'sequelize-typescript';
 import User from './models/user.model.t';
+import Person from './models/person.model.t';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,7 +16,7 @@ const sequelize = new Sequelize(database, user, password, {
   host,
   port,
   dialect: 'postgres',
-  models: [User],  
+  models: [User, Person],  
   define: {
     timestamps: false
   },
@@ -32,6 +33,7 @@ router.get('/ping', async (request, reply) => {
 
 
 router.register(require('./routes/user'), { prefix: '/users' });
+router.register(require('./routes/person'), { prefix: '/person' });
 
 router.listen({ port: 8080 }, async (err, address) => {
 

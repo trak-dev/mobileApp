@@ -1,8 +1,8 @@
-import { Table, Model, Column, PrimaryKey, AllowNull } from 'sequelize-typescript'
+import { Table, Model, Column, AllowNull  } from 'sequelize-typescript'
 
 
 interface UserModel {
-  id: string
+  id?: number
   firstname: string
   lastname: string
   email: string
@@ -13,8 +13,8 @@ interface UserModel {
 @Table
 export default class User extends Model<UserModel> {
   
-  @PrimaryKey @Column 
-  id!: string 
+  @Column({primaryKey: true}) 
+  id!: number 
   
   @AllowNull(false) @Column
   firstname!: string
