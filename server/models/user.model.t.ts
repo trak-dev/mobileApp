@@ -11,24 +11,21 @@ interface UserModel {
 }
 
 @Table
-export default class User extends Model<UserModel> {
-  
-  @Column({primaryKey: true}) 
-  id!: number 
+export default class user extends Model<UserModel> {
   
   @AllowNull(false) @Column
-  firstname!: string
+  declare firstname: string
   
   @AllowNull(false) @Column
-  lastname!: string
+  declare lastname: string
   
   @AllowNull(false) @Column
-  email!: string
+  declare email: string
   
   @AllowNull(false) @Column
-  password!: string
+  declare password: string
   
   @Column
-  pseudo!: string  
+  declare pseudo: string  
   
 }

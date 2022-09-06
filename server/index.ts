@@ -6,13 +6,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const user = process.env.DB_USER!;
+const dbuser = process.env.DB_USER!;
 const host = process.env.DB_HOST!;
 const database = process.env.DB_NAME!;
 const password = process.env.DB_PASSWORD!;
 const port = parseInt( process.env.PORT! ) || 5432;
 
-const sequelize = new Sequelize(database, user, password, {
+const sequelize = new Sequelize(database, dbuser, password, {
   host,
   port,
   dialect: 'postgres',

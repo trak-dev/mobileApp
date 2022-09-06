@@ -1,9 +1,8 @@
 import { FastifyInstance } from "fastify";
+import User_Classe from "../classes/user/user";
 import User from '../models/user.model.t';
-import Person from '../models/person.model.t';
 
 interface userQueryInterface {
-    id : string,
     firstname : string,
     lastname : string,
     email : string,
@@ -15,8 +14,8 @@ async function userRoutes (router: FastifyInstance) {
 
     router.post<{Body: userQueryInterface}>('/createUser', async (req, reply) => {
         try {
-            const { id, firstname, lastname, email, password, pseudo } = req.body;
-            if (!id || !firstname || !lastname || !email || !password || !pseudo) throw "Missing parameters";
+            const { firstname, lastname, email, password, pseudo } = req.body;
+            if (!firstname || !lastname || !email || !password) throw "Missing parameters";
             const newUser = new User({
                 firstname,
                 lastname, 
@@ -24,8 +23,8 @@ async function userRoutes (router: FastifyInstance) {
                 password,
                 pseudo
             });
-            await newUser.save();
-            reply.status(200).send(newUser);
+            const createdUser = await User_Classe.createUser(newUser);
+            reply.status(200).send(createdUser);
         } catch (error) {
             console.error(error);
             reply.status(500).send({error: error});
