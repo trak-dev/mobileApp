@@ -2,12 +2,13 @@ import User from '../../models/user.model.t';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import config from '../../config';
 
 dotenv.config();
 
 export default class User_Core {
     
-    static async createUser(user: User) {
+    static async register(user: User) {
         try {
             const hashedPassword = await bcrypt.hash(user.password, 10);
             user.password = hashedPassword;
@@ -36,11 +37,21 @@ export default class User_Core {
             const valid = await bcrypt.compare(password, user.password);
             if (!valid) throw "Password incorrect";
             user.password = "";
-            // const token = await jwt.sign({ foo: 'bar' }, process.env.JWT_SECRET, { algorithm: 'RS256', expiresIn: '1h' });
-            return user;
-        } catch (error: any) {
+            const token = await jwt.sign({ user }, config.jwtSecret, { expiresIn: '1h' });
+            return token;
+        } catch (error) {
             console.error(error);
-            throw "an error occured while creating the user";
+            throw "an error occured while logging in the user";
+        }
+    }
+
+    static async getByToken(token: string) {
+        try {
+            const user = await jwt.verify(token, config.jwtSecret);
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw "invalid token";
         }
     }
 }

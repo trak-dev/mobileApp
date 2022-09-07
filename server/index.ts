@@ -1,22 +1,22 @@
 import fastify from 'fastify';
 import { Sequelize } from 'sequelize-typescript';
 import User from './models/user.model.t';
-import Person from './models/person.model.t';
 import dotenv from 'dotenv';
+import config from './config';
 
 dotenv.config();
 
-const dbuser = process.env.DB_USER!;
-const host = process.env.DB_HOST!;
-const database = process.env.DB_NAME!;
-const password = process.env.DB_PASSWORD!;
-const port = parseInt( process.env.PORT! ) || 5432;
+const dbuser = config.database.user;
+const host = config.database.host;
+const database = config.database.name;
+const password = config.database.password;
+const port = config.port;
 
 const sequelize = new Sequelize(database, dbuser, password, {
   host,
   port,
   dialect: 'postgres',
-  models: [User, Person],  
+  models: [User],  
   define: {
     timestamps: false
   },
@@ -27,13 +27,7 @@ const router = fastify({
   logger: true
 });
 
-router.get('/ping', async (request, reply) => {
-  return 'pong\n'
-});
-
-
 router.register(require('./routes/user'), { prefix: '/users' });
-router.register(require('./routes/person'), { prefix: '/person' });
 
 router.listen({ port: 8080 }, async (err, address) => {
 
