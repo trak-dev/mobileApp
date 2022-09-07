@@ -8,6 +8,7 @@ interface UserModel {
   email: string
   password: string
   pseudo: string
+  isadmin?: boolean
 }
 
 @Table
@@ -27,5 +28,8 @@ export default class user extends Model<UserModel> {
   
   @Column
   declare pseudo: string  
+
+  @Column
+  declare isadmin: boolean
   
 }

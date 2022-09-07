@@ -21,4 +21,33 @@ export default class User_Classe {
             throw error;
         }
     }
+
+    static async getbyId(id: string, token: string) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (user.isadmin) {
+                return await User_Core.getbyId(id);
+            } else {
+                return await User_Core.getbyId(user.id);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async getAllUsers(token: string) {
+        try {
+            console.log(token);
+            const user = await User_Core.getByToken(token);
+            if (user.isadmin) {
+                return await User_Core.getAllUsers();
+            } else {
+                throw "You are not allowed to get all users";
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }

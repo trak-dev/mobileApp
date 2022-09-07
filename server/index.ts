@@ -24,7 +24,7 @@ const sequelize = new Sequelize(database, dbuser, password, {
 );
 
 const router = fastify({
-  logger: true
+  // logger: true
 });
 
 router.register(require('./routes/user'), { prefix: '/users' });

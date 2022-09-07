@@ -47,11 +47,31 @@ export default class User_Core {
 
     static async getByToken(token: string) {
         try {
-            const user = await jwt.verify(token, config.jwtSecret);
-            return user;
+            const user = await jwt.verify(token.split('')[1], config.jwtSecret);
+            return user as User;
         } catch (error) {
             console.error(error);
             throw "invalid token";
+        }
+    }
+
+    static async getbyId(id: string) {
+        try {
+            const user = await User.findOne({where: {id: id}});
+            if (!user) throw "User not found";
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw "an error occured while getting the user";
+        }
+    }
+
+    static async getAllUsers() {
+        try {
+            return await User.findAll();
+        } catch (error) {
+            console.error(error);
+            throw "an error occured while getting all users";
         }
     }
 }
