@@ -38,7 +38,6 @@ export default class User_Classe {
 
     static async getAllUsers(token: string) {
         try {
-            console.log(token);
             const user = await User_Core.getByToken(token);
             if (user.isadmin) {
                 return await User_Core.getAllUsers();

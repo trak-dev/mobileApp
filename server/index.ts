@@ -27,6 +27,12 @@ const router = fastify({
   // logger: true
 });
 
+router.addHook('onRequest', (request, reply, done) => {
+  if (!request.headers.authorization) reply.status(403).send({error: "Please provide a token"});
+  if ('Bearer' !== request.headers.authorization.split(' ')[0] || !request.headers.authorization.split(' ')[1]) reply.status(403).send({error: "Invalid token"});
+  done()
+})
+
 router.register(require('./routes/user'), { prefix: '/users' });
 
 router.listen({ port: 8080 }, async (err, address) => {

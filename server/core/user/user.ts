@@ -1,6 +1,6 @@
 import User from '../../models/user.model.t';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import config from '../../config';
 
@@ -47,7 +47,10 @@ export default class User_Core {
 
     static async getByToken(token: string) {
         try {
-            const user = await jwt.verify(token.split('')[1], config.jwtSecret);
+            const userToken = (await jwt.verify(token, config.jwtSecret)) as JwtPayload;
+            const user = await User.findOne({where: {id: userToken.user.id}});
+            if (!user) throw "User not found";
+            user.password = "";
             return user as User;
         } catch (error) {
             console.error(error);
