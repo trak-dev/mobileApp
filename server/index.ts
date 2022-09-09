@@ -23,25 +23,44 @@ const sequelize = new Sequelize(database, dbuser, password, {
 },
 );
 
+const routesWithoutAuth = [
+  '/users/login',
+  '/users/register',
+];
+
 const router = fastify({
   // logger: true
 });
 
 router.addHook('onRequest', (request, reply, done) => {
-  if (!request.headers.authorization) reply.status(403).send({error: "Please provide a token"});
-  if ('Bearer' !== request.headers.authorization.split(' ')[0] || !request.headers.authorization.split(' ')[1]) reply.status(403).send({error: "Invalid token"});
-  done()
+  // no auth needed for some routes
+  if (routesWithoutAuth.includes(request.raw.url!)) return done();
+  // check auth
+  if (request.headers.authorization) {
+    // check if token is valid
+    if (request.headers.authorization.split(' ')[0] && 'Bearer' === request.headers.authorization.split(' ')[0] && request.headers.authorization.split(' ')[1]) {
+      request.headers.authorization = request.headers.authorization.split(' ')[1];
+      return done();
+    } else {
+      console.error('Invalid token');
+      reply.status(403).send({error: "Invalid token"});
+    }
+  } else {
+    console.error('No token');
+    reply.status(401).send({error: "Please provide a token"});
+  }
 })
 
 router.register(require('./routes/user'), { prefix: '/users' });
 
+// start server
 router.listen({ port: 8080 }, async (err, address) => {
 
   if (err) {
     console.error(err);
     process.exit(1);
   }
-
+  
   console.log(`Server listening at ${address}`);
 
   try {

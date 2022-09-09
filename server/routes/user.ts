@@ -19,8 +19,8 @@ async function userRoutes (router: FastifyInstance) {
 
     router.post<{Body: registerQueryInterface}>('/register', async (req, reply) => {
         try {
-            const { firstname, lastname, email, password, pseudo } = req.body;
-            if (!firstname || !lastname || !email || !password) throw "Missing parameters";
+          if (!req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
+          const { firstname, lastname, email, password, pseudo } = req.body;
             const newUser = new User({
                 firstname,
                 lastname, 
@@ -39,8 +39,8 @@ async function userRoutes (router: FastifyInstance) {
 
       router.post<{Body: loginInterface}>('/login', async (req, reply) => {
         try {
-            const { email, password } = req.body;
-            if (!email || !password) throw "Missing parameters";
+          if (!req.body || !req.body.email || !req.body.password) throw "Missing parameters";
+          const { email, password } = req.body;
             const token = await User_Classe.login(email, password);
             reply.status(200).send(token);
         } catch (error) {
@@ -53,9 +53,7 @@ async function userRoutes (router: FastifyInstance) {
       router.get<{Params: {id : string}}>('/get/:id', async (req, reply) => {
         try {
           if (!req.params.id) throw "Missing parameters";
-          if (!req.headers.authorization) throw "Missing token";
-          if ('Bearer' !== req.headers.authorization.split(' ')[0] || !req.headers.authorization.split(' ')[1]) throw "Invalid token";
-          const person = await User_Classe.getbyId(req.params.id, req.headers.authorization.split(' ')[1]);
+          const person = await User_Classe.getbyId(req.params.id, req.headers.authorization!);
           reply.status(200).send(person);
         } catch (error) {
           console.error(error);
@@ -66,9 +64,7 @@ async function userRoutes (router: FastifyInstance) {
 
       router.get('/get', async (req, reply) => {
         try {
-          if (!req.headers.authorization) throw "Missing token";
-          if ('Bearer' !== req.headers.authorization.split(' ')[0] || !req.headers.authorization.split(' ')[1]) throw "Invalid token";
-          const person = await User_Classe.getAllUsers(req.headers.authorization.split(' ')[1]);
+          const person = await User_Classe.getAllUsers(req.headers.authorization!);
           reply.status(200).send(person);
         } catch (error) {
           console.error(error);
@@ -77,16 +73,18 @@ async function userRoutes (router: FastifyInstance) {
       
       });
 
-      // router.delete<{Params: {id : string}}>('/delete/:id', async (req, reply) => {
-      //   try {
-      //     const person = await User.destroy({where: {id: req.params.id}});
-      //     reply.status(200).send(person);
-      //   } catch (error) {
-      //     console.error(error);
-      //     reply.status(500).send({error: error});
-      //   }
+      router.delete<{Params: {id : string}}>('/delete/:id', async (req, reply) => {
+        try {
+          if (!req.params.id) throw "Missing parameters";
+          const person = await User_Classe.deleteUser(req.params.id, req.headers.authorization!);
+          // const person = await User.destroy({where: {id: req.params.id}});
+          reply.status(200).send(person);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send({error: error});
+        }
       
-      // });
+      });
       
 };
 

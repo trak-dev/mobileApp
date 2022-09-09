@@ -49,4 +49,18 @@ export default class User_Classe {
             throw error;
         }
     }
+    
+    static async deleteUser(id: string, token: string) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (user.isadmin) {
+                return await User_Core.deleteUser(id);
+            } else {
+                return await User_Core.deleteUser(user.id);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }
