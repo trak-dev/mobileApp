@@ -16,7 +16,7 @@ export default class basket extends Model<BasketModel> {
     declare user_id: number
 
     @Column
-    declare items: { id: number, quantity: number }[]
+    declare items: string
 
     @Column
     declare ordered: boolean

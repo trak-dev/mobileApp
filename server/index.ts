@@ -3,6 +3,9 @@ import { Sequelize } from 'sequelize-typescript';
 import User from './models/user.model.t';
 import dotenv from 'dotenv';
 import config from './config';
+import Item from './models/item.model.t';
+import Basket from './models/basket.model.t';
+import Order from './models/order.model.t';
 
 dotenv.config();
 
@@ -16,7 +19,7 @@ const sequelize = new Sequelize(database, dbuser, password, {
   host,
   port,
   dialect: 'postgres',
-  models: [User],  
+  models: [User, Item, Basket, Order],  
   define: {
     timestamps: false
   },
@@ -52,9 +55,9 @@ router.addHook('onRequest', (request, reply, done) => {
 })
 
 router.register(require('./routes/user'), { prefix: '/users' });
-router.register(require('./routes/orders'), { prefix: '/orders' });
-router.register(require('./routes/baskets'), { prefix: '/baskets' });
-router.register(require('./routes/items'), { prefix: '/items' });
+router.register(require('./routes/order'), { prefix: '/orders' });
+router.register(require('./routes/basket'), { prefix: '/baskets' });
+router.register(require('./routes/item'), { prefix: '/items' });
 
 // start server
 router.listen({ port: 8080 }, async (err, address) => {
