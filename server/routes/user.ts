@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import User_Classe from "../classes/user/user";
 import User from '../models/user.model.t';
 
-interface registerQueryInterface {
+interface userQueryInterface {
     firstname : string,
     lastname : string,
     email : string,
@@ -17,7 +17,7 @@ interface loginInterface {
 
 async function userRoutes (router: FastifyInstance) {
 
-    router.post<{Body: registerQueryInterface}>('/register', async (req, reply) => {
+    router.post<{Body: userQueryInterface}>('/register', async (req, reply) => {
         try {
           if (!req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
           const { firstname, lastname, email, password, pseudo } = req.body;
@@ -50,11 +50,36 @@ async function userRoutes (router: FastifyInstance) {
       
       });
 
-      router.get<{Params: {id : string}}>('/get/:id', async (req, reply) => {
+      router.get<{Params: {id : string}}>('/:id', async (req, reply) => {
         try {
           if (!req.params.id) throw "Missing parameters";
-          const person = await User_Classe.getbyId(req.params.id, req.headers.authorization!);
-          reply.status(200).send(person);
+          const user = await User_Classe.getbyId(req.params.id, req.headers.authorization!);
+          reply.status(200).send(user);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send({error: error});
+        }
+      
+      });
+
+      router.delete<{Params: {id : string}}>('/:id', async (req, reply) => {
+        try {
+          if (!req.params.id) throw "Missing parameters";
+          const user = await User_Classe.deleteUser(req.params.id, req.headers.authorization!);
+          reply.status(200).send(user);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send({error: error});
+        }
+      
+      });
+
+      router.patch<{Params: {id : string}, Body: userQueryInterface}>('/:id', async (req, reply) => {
+        try {
+          if (!req.params.id || !req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
+          const user = req.body;
+          const updated_user = await User_Classe.updateUser(req.params.id, req.headers.authorization!, user as User);
+          reply.status(200).send(updated_user);
         } catch (error) {
           console.error(error);
           reply.status(500).send({error: error});
@@ -64,8 +89,8 @@ async function userRoutes (router: FastifyInstance) {
 
       router.get('/get', async (req, reply) => {
         try {
-          const person = await User_Classe.getAllUsers(req.headers.authorization!);
-          reply.status(200).send(person);
+          const user = await User_Classe.getAllUsers(req.headers.authorization!);
+          reply.status(200).send(user);
         } catch (error) {
           console.error(error);
           reply.status(500).send({error: error});
@@ -73,18 +98,7 @@ async function userRoutes (router: FastifyInstance) {
       
       });
 
-      router.delete<{Params: {id : string}}>('/delete/:id', async (req, reply) => {
-        try {
-          if (!req.params.id) throw "Missing parameters";
-          const person = await User_Classe.deleteUser(req.params.id, req.headers.authorization!);
-          // const person = await User.destroy({where: {id: req.params.id}});
-          reply.status(200).send(person);
-        } catch (error) {
-          console.error(error);
-          reply.status(500).send({error: error});
-        }
-      
-      });
+
       
 };
 

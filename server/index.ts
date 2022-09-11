@@ -52,6 +52,9 @@ router.addHook('onRequest', (request, reply, done) => {
 })
 
 router.register(require('./routes/user'), { prefix: '/users' });
+router.register(require('./routes/user'), { prefix: '/orders' });
+router.register(require('./routes/user'), { prefix: '/baskets' });
+router.register(require('./routes/user'), { prefix: '/items' });
 
 // start server
 router.listen({ port: 8080 }, async (err, address) => {

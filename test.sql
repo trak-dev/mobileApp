@@ -21,7 +21,8 @@ CREATE TABLE Baskets(
    id SERIAL PRIMARY KEY,
    user_id INT NOT NULL,
    items JSON,
-   ordered boolean default false
+   ordered boolean default false,
+   hidden boolean default false
 );
 
 CREATE TABLE Items (

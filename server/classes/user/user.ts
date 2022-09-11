@@ -63,4 +63,20 @@ export default class User_Classe {
             throw error;
         }
     }
+
+    static async updateUser(id: string, token: string, user: User) {
+        try {
+            const requesting_user = await User_Core.getByToken(token);
+            if (requesting_user.isadmin) {
+                return await User_Core.updateUser(id, user);
+            } else {
+                user.id = requesting_user.id;
+                user.isadmin = requesting_user.isadmin;
+                return await User_Core.updateUser(requesting_user.id, user);
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
 }

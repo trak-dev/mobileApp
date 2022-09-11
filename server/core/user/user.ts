@@ -37,7 +37,7 @@ export default class User_Core {
             const valid = await bcrypt.compare(password, user.password);
             if (!valid) throw "Password incorrect";
             user.password = "";
-            const token = await jwt.sign({ user }, config.jwtSecret, { expiresIn: '10h' });
+            const token = await jwt.sign({ user }, config.jwtSecret);
             return token;
         } catch (error) {
             console.error(error);
@@ -65,6 +65,7 @@ export default class User_Core {
             return user;
         } catch (error) {
             console.error(error);
+            if (error === "User not found") throw error;
             throw "an error occured while getting the user";
         }
     }
@@ -84,6 +85,16 @@ export default class User_Core {
         } catch (error) {
             console.error(error);
             throw "an error occured while deleting the user";
+        }
+    }
+
+    static async updateUser(id: string, user: User) {
+        try {
+            user.password = await bcrypt.hash(user.password, 10);
+            return await User.update(user, {where: {id: id}});
+        } catch (error) {
+            console.error(error);
+            throw "an error occured while updating the user";
         }
     }
 }
