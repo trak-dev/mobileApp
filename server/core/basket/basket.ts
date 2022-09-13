@@ -26,7 +26,7 @@ export default class User_Core {
         }
     }
 
-    static async getBasket(user_id: number, id: string) {
+    static async getBasket(user_id: number, id: number) {
         try {
             const basket = await Basket.findOne({where : {user_id, id}});
             return basket;
@@ -59,7 +59,7 @@ export default class User_Core {
         }
     }
 
-    static async deleteBasket(user_id: number, id: string) {
+    static async deleteBasket(user_id: number, id: number) {
         try {
             const basket = await Basket.destroy({where : {user_id, id}});
             return basket;

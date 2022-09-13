@@ -6,8 +6,8 @@ interface OrderModel {
   user_id: number
   basket_id: number
   address: string
-  payed: boolean
-  delivered: boolean
+  payed?: boolean
+  delivered?: boolean
 }
 
 @Table

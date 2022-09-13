@@ -29,7 +29,7 @@ export default class Basket_Classe {
         }
     }
     
-    static async getBasket(token: string, id: string) {
+    static async getBasket(token: string, id: number) {
         try {
             const user = await User_Core.getByToken(token);
             const basket = await Basket_Core.getBasket(user.id, id);
@@ -49,7 +49,7 @@ export default class Basket_Classe {
         }
     }
 
-    static async deleteBasket(token: string, id: string) {
+    static async deleteBasket(token: string, id: number) {
         try {
             const user = await User_Core.getByToken(token);
             const basket = await Basket_Core.deleteBasket(user.id, id);
