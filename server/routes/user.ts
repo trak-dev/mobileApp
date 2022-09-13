@@ -44,8 +44,8 @@ async function userRoutes (router: FastifyInstance) {
 
       router.get<{Params: {id : string}}>('/:id', async (req, reply) => {
         try {
-          if (!req.params.id) throw "Missing parameters";
-          const user = await User_Classe.getbyId(req.params.id, req.headers.authorization!);
+          if (!parseInt(req.params.id)) throw "Missing parameters";
+          const user = await User_Classe.getbyId(parseInt(req.params.id), req.headers.authorization!);
           reply.status(200).send(user);
         } catch (error) {
           console.error(error);
@@ -56,8 +56,8 @@ async function userRoutes (router: FastifyInstance) {
 
       router.delete<{Params: {id : string}}>('/:id', async (req, reply) => {
         try {
-          if (!req.params.id) throw "Missing parameters";
-          const user = await User_Classe.deleteUser(req.params.id, req.headers.authorization!);
+          if (!parseInt(req.params.id)) throw "Missing parameters";
+          const user = await User_Classe.deleteUser(parseInt(req.params.id), req.headers.authorization!);
           reply.status(200).send(user);
         } catch (error) {
           console.error(error);
@@ -68,7 +68,7 @@ async function userRoutes (router: FastifyInstance) {
 
       router.patch<{Params: {id : string}, Body: User}>('/:id', async (req, reply) => {
         try {
-          if (!req.params.id || !req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
+          if (!parseInt(req.params.id) || !req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
           const { firstname, lastname, email, password, pseudo } = req.body;
           const user = new User({
             firstname,
@@ -77,7 +77,7 @@ async function userRoutes (router: FastifyInstance) {
             password,
             pseudo
         });
-          const updated_user = await User_Classe.updateUser(req.params.id, req.headers.authorization!, user as User);
+          const updated_user = await User_Classe.updateUser(parseInt(req.params.id), req.headers.authorization!, user as User);
           reply.status(200).send(updated_user);
         } catch (error) {
           console.error(error);

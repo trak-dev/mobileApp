@@ -4,9 +4,9 @@ import { Table, Model, Column, AllowNull } from 'sequelize-typescript'
 interface BasketModel {
   id?: number
   user_id: number
-  items: { id: number, quantity: number }[]
-  ordered: boolean
-  hidden: boolean
+  items: { id: number, quantity: number }[] | string
+  ordered?: boolean
+  hidden?: boolean
 }
 
 @Table

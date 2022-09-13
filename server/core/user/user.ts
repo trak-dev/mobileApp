@@ -58,7 +58,7 @@ export default class User_Core {
         }
     }
 
-    static async getbyId(id: string) {
+    static async getbyId(id: number) {
         try {
             const user = await User.findOne({where: {id: id}});
             if (!user) throw "User not found";
@@ -79,7 +79,7 @@ export default class User_Core {
         }
     }
 
-    static async deleteUser(id: string) {
+    static async deleteUser(id: number) {
         try {
             return await User.destroy({where: {id: id}});
         } catch (error) {
@@ -88,7 +88,7 @@ export default class User_Core {
         }
     }
 
-    static async updateUser(id: string, user: User) {
+    static async updateUser(id: number, user: User) {
         try {
             user.password = await bcrypt.hash(user.password, 10);
             return await User.update(user, {where: {id: id}});

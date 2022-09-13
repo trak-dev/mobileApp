@@ -36,8 +36,8 @@ async function itemRoutes (router: FastifyInstance) {
 
       router.get<{Params: {id : string}}>('/:id', async (req, reply) => {
         try {
-          if (!req.params.id) throw "Missing parameters";
-            const item = await Item_Classe.getById(req.params.id, req.headers.authorization!);
+          if (!parseInt(req.params.id)) throw "Missing parameters";
+            const item = await Item_Classe.getById(parseInt(req.params.id), req.headers.authorization!);
             reply.status(200).send(item);
         } catch (error) {
           console.error(error);
@@ -47,8 +47,8 @@ async function itemRoutes (router: FastifyInstance) {
 
       router.delete<{Params: {id : string}}>('/:id', async (req, reply) => {
         try {
-          if (!req.params.id) throw "Missing parameters";
-            const item = await Item_Classe.deleteItem(req.params.id, req.headers.authorization!);
+          if (!parseInt(req.params.id)) throw "Missing parameters";
+            const item = await Item_Classe.deleteItem(parseInt(req.params.id), req.headers.authorization!);
             reply.status(200).send(item);
         } catch (error) {
           console.error(error);

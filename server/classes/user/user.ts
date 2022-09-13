@@ -22,7 +22,7 @@ export default class User_Classe {
         }
     }
 
-    static async getbyId(id: string, token: string) {
+    static async getbyId(id: number, token: string) {
         try {
             const user = await User_Core.getByToken(token);
             if (user.isadmin) {
@@ -50,7 +50,7 @@ export default class User_Classe {
         }
     }
     
-    static async deleteUser(id: string, token: string) {
+    static async deleteUser(id: number, token: string) {
         try {
             const user = await User_Core.getByToken(token);
             if (user.isadmin) {
@@ -64,7 +64,7 @@ export default class User_Classe {
         }
     }
 
-    static async updateUser(id: string, token: string, user: User) {
+    static async updateUser(id: number, token: string, user: User) {
         try {
             const requesting_user = await User_Core.getByToken(token);
             if (requesting_user.isadmin) {

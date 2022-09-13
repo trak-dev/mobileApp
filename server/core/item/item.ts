@@ -21,7 +21,7 @@ export default class User_Core {
         }
     }
 
-    static async getById(id: string) {
+    static async getById(id: number) {
         try {
             return await Item.findByPk(id);
         } catch (error) {
@@ -30,7 +30,7 @@ export default class User_Core {
         }
     }
 
-    static async deleteItem(id: string) {
+    static async deleteItem(id: number) {
         try {
             const item = await Item.findByPk(id);
             if (!item) throw "item not found";

@@ -26,7 +26,7 @@ export default class Item_Classe {
         }
     }
 
-    static async getById(id: string, token: string) {
+    static async getById(id: number, token: string) {
         try {
             await User_Core.getByToken(token);
             return await Item_Core.getById(id);
@@ -36,7 +36,7 @@ export default class Item_Classe {
         }
     }
 
-    static async deleteItem(id: string, token: string) {
+    static async deleteItem(id: number, token: string) {
         try {
             const user = await User_Core.getByToken(token);
             if (!user.isadmin) throw "You are not allowed to delete items";
