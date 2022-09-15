@@ -1,14 +1,14 @@
 <div class="whole">
     <div class="grid p-fluid login-box bg-primary-reverse p-2">
 
-        <h1>Incsription</h1>
+        <h1>Inscription</h1>
 
         <h5>Prénom</h5>
 
         <div class="md:col-4">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input type="text" pInputText placeholder="Prénom">         
+                <input type="text" pInputText placeholder="Prénom" [(ngModel)]="user.firstname">         
             </div>
         </div>
 
@@ -17,7 +17,7 @@
         <div class="md:col-4">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input type="text" pInputText placeholder="Nom">         
+                <input type="text" pInputText placeholder="Nom" [(ngModel)]="user.lastname">         
             </div>
         </div>
 
@@ -26,13 +26,13 @@
         <div class="md:col-4">
             <div class="p-inputgroup">
                 <span class="p-inputgroup-addon"><i class="pi pi-at"></i></span>
-                <input type="text" pInputText placeholder="Email">         
+                <input type="text" pInputText placeholder="Email" [(ngModel)]="user.email">         
             </div>
         </div>
 
         <h5>Mot de passe</h5>
 
-        <p-password [(ngModel)]="password" [toggleMask]="true" placeholder="Mot de passe">
+        <p-password [(ngModel)]="user.password" [toggleMask]="true" placeholder="Mot de passe">
             <ng-template pTemplate="header">
                 <h6>Entrez votre mot de passe</h6>
             </ng-template>
@@ -48,7 +48,7 @@
             </ng-template>
         </p-password>
 
-        <button pButton pRipple type="button" label="S'inscrire" class="p-button-rounded mt-5"></button>
+        <button pButton pRipple type="button" label="S'inscrire" class="p-button-rounded mt-5" (click)="register()"></button>
     </div>  
     <p class="text-300" [routerLink]="['/login']">Déja un compte ? Se connecter !</p>
     <a [routerLink]="['/password-lost']">Mot de passe oublié ?</a>

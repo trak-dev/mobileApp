@@ -8,16 +8,17 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PasswordLostComponent } from './pages/password-lost/password-lost.component';
+import { AuthGuardService } from './services/authGuard/auth-guard.service';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/login" },
   { path: "login", component: LoginComponent },
-  { path: "home", component: HomeComponent },
-  { path: "register", component: RegisterComponent },
-  { path: "product/:id", component: ProductComponent },
-  { path: "cart", component: CartComponent },
+  { path: "home", component: HomeComponent, canActivate: [AuthGuardService] },
+  { path: "register", component: RegisterComponent},
+  { path: "product/:id", component: ProductComponent, canActivate: [AuthGuardService] },
+  { path: "cart", component: CartComponent, canActivate: [AuthGuardService] },
   { path: "password-lost", component: PasswordLostComponent },
-  { path: "admin", component: AdminComponent },
+  { path: "admin", component: AdminComponent, canActivate: [AuthGuardService] },
   { path: "**", component: NotFoundComponent },
 ];
 

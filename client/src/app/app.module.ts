@@ -21,6 +21,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from 'primeng/rating';
 import { DropdownModule } from "primeng/dropdown";
+import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,11 @@ import { DropdownModule } from "primeng/dropdown";
     SidebarModule,
     DataViewModule,
     RatingModule,
-    DropdownModule
+    DropdownModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center'
+    }),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

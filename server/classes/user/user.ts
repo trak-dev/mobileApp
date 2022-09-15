@@ -6,7 +6,11 @@ export default class User_Classe {
     
     static async register(user: User) {
         try {
-            return await User_Core.register(user);
+            const pwd = user.password;
+            const newuser = await User_Core.register(user);
+            const token = await User_Core.login(newuser.email, pwd);
+            newuser.password = "";
+            return {token, user: newuser};
         } catch (error) {
             console.error(error);
             throw error;
@@ -15,7 +19,9 @@ export default class User_Classe {
 
     static async login(email: string, password: string) {
         try {
-            return await User_Core.login(email, password);
+            const token =  await User_Core.login(email, password);
+            const user = await User_Core.getByToken(token);
+            return {token, user};
         } catch (error) {
             console.error(error);
             throw error;
@@ -74,6 +80,42 @@ export default class User_Classe {
                 user.isadmin = requesting_user.isadmin;
                 return await User_Core.updateUser(requesting_user.id, user);
             }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async isUserLoggedIn(token: string) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (user) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async recoverPassword(email: string) {
+        try {
+            const User = await User_Core.getByEmail(email);
+            return await User_Core.recoverPassword(User);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async resetPassword(password: string, token: string) {
+        try {
+            const pwd = password;
+            const user = await User_Core.resetPassword(token, pwd);
+            const loginToken = await User_Core.login(user.email, pwd);
+            return {token : loginToken, user};
         } catch (error) {
             console.error(error);
             throw error;

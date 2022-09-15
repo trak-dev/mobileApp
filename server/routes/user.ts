@@ -20,11 +20,11 @@ async function userRoutes (router: FastifyInstance) {
                 password,
                 pseudo
             });
-            const createdUser = await User_Classe.register(newUser);
-            reply.status(200).send(createdUser);
+            const userTokenAndId = await User_Classe.register(newUser);
+            reply.status(200).send(userTokenAndId);
         } catch (error) {
             console.error(error);
-            reply.status(500).send({error: error});
+            reply.status(500).send(error);
         }
       
       });
@@ -33,11 +33,11 @@ async function userRoutes (router: FastifyInstance) {
         try {
           if (!req.body || !req.body.email || !req.body.password) throw "Missing parameters";
           const { email, password } = req.body;
-            const token = await User_Classe.login(email, password);
-            reply.status(200).send(token);
+            const userTokenAndId = await User_Classe.login(email, password);
+            reply.status(200).send(userTokenAndId);
         } catch (error) {
             console.error(error);
-            reply.status(500).send({error: error});
+            reply.status(500).send(error);
         }
       
       });
@@ -49,7 +49,7 @@ async function userRoutes (router: FastifyInstance) {
           reply.status(200).send(user);
         } catch (error) {
           console.error(error);
-          reply.status(500).send({error: error});
+          reply.status(500).send(error);
         }
       
       });
@@ -58,10 +58,10 @@ async function userRoutes (router: FastifyInstance) {
         try {
           if (!parseInt(req.params.id)) throw "Missing parameters";
           const user = await User_Classe.deleteUser(parseInt(req.params.id), req.headers.authorization!);
-          reply.status(200).send(user);
+          reply.status(200).send({user});
         } catch (error) {
           console.error(error);
-          reply.status(500).send({error: error});
+          reply.status(500).send(error);
         }
       
       });
@@ -78,10 +78,10 @@ async function userRoutes (router: FastifyInstance) {
             pseudo
         });
           const updated_user = await User_Classe.updateUser(parseInt(req.params.id), req.headers.authorization!, user as User);
-          reply.status(200).send(updated_user);
+          reply.status(200).send({updated_user});
         } catch (error) {
           console.error(error);
-          reply.status(500).send({error: error});
+          reply.status(500).send(error);
         }
       
       });
@@ -92,7 +92,44 @@ async function userRoutes (router: FastifyInstance) {
           reply.status(200).send(user);
         } catch (error) {
           console.error(error);
-          reply.status(500).send({error: error});
+          reply.status(500).send(error);
+        }
+      
+      });
+
+      router.get('/isUserConnected', async (req, reply) => {
+        try {
+          const logged = await User_Classe.isUserLoggedIn(req.headers.authorization! );
+          reply.status(200).send({logged});
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
+        }
+      
+      });
+
+      router.patch<{Body: { email : string}}>('/recover-password', async (req, reply) => {
+        try {
+          if (!req.body || !req.body.email) throw "Missing parameters";
+          const { email } = req.body;
+          const tokenCreated = await User_Classe.recoverPassword(email);
+          reply.status(200).send({tokenCreated});
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
+        }
+      
+      });
+
+      router.patch<{Body: { password : string, token : string}}>('/reset-password', async (req, reply) => {
+        try {
+          if (!req.body || !req.body.password || !req.body.token) throw "Missing parameters";
+          const { password, token } = req.body;
+          const loginData = await User_Classe.resetPassword(password, token);
+          reply.status(200).send(loginData);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
         }
       
       });

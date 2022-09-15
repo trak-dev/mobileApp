@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.1.0",
     "@fastify/middie": "^8.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/branca": "^0.4.0",

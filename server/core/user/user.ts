@@ -33,14 +33,16 @@ export default class User_Core {
         static async login(email: string, password: string) {
         try {
             const user = await User.findOne({where: {email: email}});
-            if (!user) throw "User not found";
+            if (!user) throw "Nom de compte incorrect";
+            console.log(password, user.id)
             const valid = await bcrypt.compare(password, user.password);
-            if (!valid) throw "Password incorrect";
+            if (!valid) throw "Mot de passe incorrect";
             user.password = "";
-            const token = await jwt.sign({ user }, config.jwtSecret);
+            const token = await jwt.sign({ user }, config.jwtSecret, { expiresIn: '1h' });
             return token;
         } catch (error) {
             console.error(error);
+            if (typeof error === 'string') throw error;
             throw "an error occured while logging in the user";
         }
     }
@@ -49,7 +51,7 @@ export default class User_Core {
         try {
             const userToken = (await jwt.verify(token, config.jwtSecret)) as JwtPayload;
             const user = await User.findOne({where: {id: userToken.user.id}});
-            if (!user) throw "User not found";
+            if (!user) throw "Utilisateur non trouvé";
             user.password = "";
             return user as User;
         } catch (error) {
@@ -61,11 +63,11 @@ export default class User_Core {
     static async getbyId(id: number) {
         try {
             const user = await User.findOne({where: {id: id}});
-            if (!user) throw "User not found";
+            if (!user) throw "Utilisateur non trouvé";
             return user;
         } catch (error) {
             console.error(error);
-            if (error === "User not found") throw error;
+            if (error === "Utilisateur non trouvé") throw error;
             throw "an error occured while getting the user";
         }
     }
@@ -95,6 +97,47 @@ export default class User_Core {
         } catch (error) {
             console.error(error);
             throw "an error occured while updating the user";
+        }
+    }
+
+    static async getByEmail(email: string) {
+        try {
+            const user = await User.findOne({where: {email: email}});
+            if (!user) throw "Utilisateur non trouvé";
+            return user;
+        } catch (error) {
+            console.error(error);
+            if (error === "Utilisateur non trouvé") throw error;
+            throw "an error occured while getting the user";
+        }
+    }
+
+    static async recoverPassword(user: User) {
+        try {
+            const token = await jwt.sign({ id : user.id }, config.jwtSecret, { expiresIn: '1h' });
+            user.update({password_token: token}, {where: {id: user.id}});
+            return true;
+        } catch (error) {
+            console.error(error);
+            throw "an error occured while recovering the password";
+        }
+    }
+
+    static async resetPassword(token: string, password: string) {
+        try {
+            const userToken = (await jwt.verify(token, config.jwtSecret)) as JwtPayload;
+            if (!userToken.id) throw "invalid token";
+            const user = await User.findOne({where: {id: userToken.id}});
+            if (!user) throw "Utilisateur non trouvé";
+            console.log(password, user.id)
+            user.password = await bcrypt.hash(password, 10);
+            user.password_token = "";
+            await user.save();
+            user.password = "";
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw "an error occured while resetting the password";
         }
     }
 }

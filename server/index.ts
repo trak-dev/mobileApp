@@ -6,6 +6,7 @@ import config from './config';
 import Item from './models/item.model.t';
 import Basket from './models/basket.model.t';
 import Order from './models/order.model.t';
+import cors from '@fastify/cors'
 
 dotenv.config();
 
@@ -29,11 +30,17 @@ const sequelize = new Sequelize(database, dbuser, password, {
 const routesWithoutAuth = [
   '/users/login',
   '/users/register',
+  '/users/recover-password',
+  '/users/reset-password'
 ];
 
 const router = fastify({
   // logger: true
 });
+
+router.register(cors, { 
+  // put your options here
+})
 
 router.addHook('onRequest', (request, reply, done) => {
   // no auth needed for some routes

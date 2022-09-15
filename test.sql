@@ -5,6 +5,7 @@ CREATE TABLE Users(
    email VARCHAR(128) NOT NULL UNIQUE,
    pseudo VARCHAR(64) UNIQUE,
    password VARCHAR(255) NOT NULL,
+   password_token VARCHAR(255) UNIQUE,, 
    isAdmin boolean default false
 );
 
