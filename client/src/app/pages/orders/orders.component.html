@@ -1,9 +1,9 @@
 <div style="display: flex; justify-content: center; text-align: center; margin-top: 40px" *ngFor="let cart of carts">
-    <p-card header="Mon panier" [style]="{'width': '20rem', 'margin-bottom': '2em'}">
+    <p-card [header]="cart.hidden ? 'Ancienne commande' : 'Commande en cours'" [style]="{'width': '20rem', 'margin-bottom': '2em'}">
         <h2>Contenu : </h2>
         <p *ngFor="let item of cart.items">{{item.id | itemIdToString | async}} : {{item.quantity}} </p>
         <p-divider></p-divider>
-        <p-button label="Annuler la commande" icon="pi pi-times" styleClass="p-button-secondary" (onClick)="cancelOrder(cart)"></p-button>
+        <p-button label="Annuler la commande" icon="pi pi-times" styleClass="p-button-secondary" (onClick)="cancelOrder(cart)" *ngIf="!cart.hidden"></p-button>
     </p-card>
 </div>
-<h2 *ngIf="carts.length === 0" style="text-align: center;">Aucune commande à afficher.</h2>
+<h2 *ngIf="carts?.length === 0" style="text-align: center;">Aucune commande à afficher.</h2>

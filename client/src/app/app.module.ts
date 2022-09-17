@@ -28,6 +28,7 @@ import { NavbarComponent } from './pages/navbar/navbar.component';
 import { CardModule } from 'primeng/card';
 import { ItemIdToStringPipe } from './pipes/item-id-to-string.pipe';
 import { OrdersComponent } from './pages/orders/orders.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { OrdersComponent } from './pages/orders/orders.component';
       positionClass: 'toast-top-center'
     }),
     HttpClientModule,
-    CardModule
+    CardModule,
+    InputNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent]

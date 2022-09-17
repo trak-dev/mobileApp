@@ -1,9 +1,16 @@
-<div style="display: flex; justify-content: center; text-align: center; margin-top: 40px" *ngFor="let cart of carts">
-    <p-card header="Mon panier" [style]="{'width': '20rem', 'margin-bottom': '2em'}">
-        <h2>Contenu : </h2>
-        <p *ngFor="let item of cart.items">{{item.id | itemIdToString | async}} : {{item.quantity}} </p>
-        <p-divider></p-divider>
-        <p-button  label="Commander" icon="pi pi-check" styleClass="p-button-secondary" (onClick)="placeOrder(cart)"></p-button>
-    </p-card>
+
+<div style="text-align: center;" *ngIf="cart?.id && !cart?.ordered">
+    <h2>Mon panier : </h2>
+    <div *ngFor="let item of cart.items">
+        <label for="horizontal">{{item.id | itemIdToString | async}} : </label>
+        <p-inputNumber [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity()" [showButtons]="true" buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1"
+        decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" [inputStyle]="{'text-align': 'center'}" style="margin-top: 20px;">
+        </p-inputNumber>
+    </div>
+    <div class="field col-12 md:col-3">
+        
+    </div>
+    <p-divider></p-divider>
+    <p-button  label="Commander" icon="pi pi-check" styleClass="p-button-secondary" (onClick)="placeOrder(cart)"></p-button>
 </div>
-<h2 *ngIf="carts.length === 0" style="text-align: center;">Aucun panier à afficher.</h2>
+<h2 *ngIf="!cart?.id || cart?.ordered" style="text-align: center;">Aucun panier à afficher.</h2>

@@ -12,7 +12,7 @@ export default class User_Core {
             return basket;
         } catch (error) {
             console.error(error);
-            throw "Error while creating new basket";
+            throw "Erreur pendant la création du panier";
         }
     }
 
@@ -22,7 +22,7 @@ export default class User_Core {
             return baskets;
         } catch (error) {
             console.error(error);
-            throw "Error while getting baskets";
+            throw "Erreur pendant la récupération des paniers";
         }
     }
 
@@ -32,7 +32,7 @@ export default class User_Core {
             return baskets;
         } catch (error) {
             console.error(error);
-            throw "Error while getting baskets";
+            throw "Erreur pendant la récupération des paniers";
         }
     }
 
@@ -42,23 +42,54 @@ export default class User_Core {
             return basket;
         } catch (error) {
             console.error(error);
-            throw "Error while getting basket";
+            throw "Erreur pendant la récupération du panier";
         }
     }
 
     static async updateBasket(user_id: number, basket: Basket) {
         try {
-            basket.items = JSON.stringify(basket.items);
-            const updatedBasket = await Basket.update({
-                items : basket.items,
-                ordered : basket.ordered,
-                hidden : basket.hidden
-            }, {where : {user_id, id : basket.id}});
-            return updatedBasket;
+            const oldBasket = await Basket.findByPk(basket.id);
+            for (let item of basket.items) {
+                // @ts-ignore
+                const oldItem = oldBasket!.items.find((oldItem) => oldItem.id === item.id);
+
+                // @ts-ignore
+                const itemFromDB = await Item_Core.getById(item.id);
+
+                if (!itemFromDB!.id) throw "L'objet n'existe pas";
+
+                // @ts-ignore
+                let numberToChange = item.quantity - oldItem.quantity;
+
+                // @ts-ignore
+                if (itemFromDB.quantity - numberToChange < 0) throw "Pas assez d'objets en stock !";
+
+                // @ts-ignore
+                itemFromDB!.quantity -= numberToChange;
+                await Item_Core.updateItem(itemFromDB!); 
+
+                // @ts-ignore
+                if (item.quantity === 0) {
+                    // @ts-ignore
+                    basket.items = basket.items.filter((i) => i.id !== oldItem.id);
+                }
+
+            }
+            if (basket.items.length === 0) {
+                await Basket.destroy({where : {user_id, id : basket.id}});
+            } else {
+                basket.items = JSON.stringify(basket.items);
+                await Basket.update({
+                    items : basket.items,
+                    ordered : basket.ordered,
+                    hidden : basket.hidden
+                }, {where : {user_id, id : basket.id}});
+            }
+            return true;
         } catch (error) {
             console.error(error);
             if (typeof(error) === "string") throw error;
-            throw "Error while updating basket";
+            throw "Erreur pendant la mise à jour du panier";
         }
     }
 
@@ -77,7 +108,7 @@ export default class User_Core {
             return deleted;
         } catch (error) {
             console.error(error);
-            throw "Error while deleting basket";
+            throw "Erreur pendant la suppression du panier";
         }
     }
 
@@ -94,7 +125,7 @@ export default class User_Core {
             return await Basket.update({items : JSON.stringify(activeBasket.items)}, {where : {user_id, id : activeBasket.id}});
         } catch (error) {
             console.error(error);
-            throw "Error while updating active basket";
+            throw "Erreur pendant la mise à jour du panier";
         }
     }
 

@@ -49,4 +49,13 @@ export class CartService {
       throw error;
     }
   }
+
+  async updateQuantity(basket: BasketModel) {
+    try {
+      await this._http.patch(`http://localhost:8080/baskets`, basket, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }
