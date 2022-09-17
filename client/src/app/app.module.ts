@@ -23,6 +23,11 @@ import { RatingModule } from 'primeng/rating';
 import { DropdownModule } from "primeng/dropdown";
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
+import { AccountComponent } from './pages/account/account.component';
+import { NavbarComponent } from './pages/navbar/navbar.component';
+import { CardModule } from 'primeng/card';
+import { ItemIdToStringPipe } from './pipes/item-id-to-string.pipe';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +39,10 @@ import { HttpClientModule } from '@angular/common/http';
     ProductComponent,
     NotFoundComponent,
     RegisterComponent,
-    PasswordLostComponent
+    PasswordLostComponent,
+    AccountComponent,
+    NavbarComponent,
+    ItemIdToStringPipe
   ],
   imports: [
     BrowserModule,
@@ -52,7 +60,8 @@ import { HttpClientModule } from '@angular/common/http';
     ToastrModule.forRoot({
       positionClass: 'toast-top-center'
     }),
-    HttpClientModule
+    HttpClientModule,
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

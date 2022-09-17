@@ -9,6 +9,10 @@ const config = {
     },
     port : parseInt( process.env.PORT! ) || 5432,
     jwtSecret : process.env.JWT_SECRET || '',
+    mail : {
+        user : process.env.MAIL_USER || '',
+        pass : process.env.MAIL_PASS || '',
+    }
 }
 
 export default config;

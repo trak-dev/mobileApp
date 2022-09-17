@@ -1,0 +1,22 @@
+<div style="text-align: center; height: 100%;">
+    <h1>Mon compte</h1>
+    <p-divider></p-divider>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="width: 40%;">
+            <h2>prénom</h2>
+            <input style="width: 90%;" type="text" pInputText [(ngModel)]="user.firstname"> 
+        </div>
+        <div style="width: 40%;">
+            <h2>nom</h2>
+            <input style="width: 90%;" type="text" pInputText [(ngModel)]="user.lastname">
+        </div>
+    </div>
+
+    <h3>pseudo</h3>
+    <input style="width: 90%;" type="text" pInputText [(ngModel)]="user.pseudo">
+
+    <h3>email</h3> 
+    <input style="width: 90%;" type="text" pInputText [(ngModel)]="user.email">
+
+    <button pButton pRipple class="submit" label="Enregistrer" (click)="saveEdit()"></button>
+</div>

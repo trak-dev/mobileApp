@@ -10,7 +10,7 @@ async function basketRoutes (router: FastifyInstance) {
             if (!req.body || !req.body.object_id || !req.body.quantity ) throw "Missing parameters";
             const { object_id, quantity} = req.body;
             const createdBasket = await Basket_Classe.createNewBasket(req.headers.authorization!, object_id, quantity);
-            reply.status(200).send({createdBasket});
+            reply.status(200).send(createdBasket);
         } catch (error) {
             console.error(error);
             reply.status(500).send(error);
@@ -21,7 +21,7 @@ async function basketRoutes (router: FastifyInstance) {
       router.get('/', async (req, reply) => {
         try {
             const baskets = await Basket_Classe.getBaskets(req.headers.authorization!);
-            reply.status(200).send({baskets});
+            reply.status(200).send(baskets);
         } catch (error) {
             console.error(error);
             reply.status(500).send(error);
@@ -33,7 +33,7 @@ async function basketRoutes (router: FastifyInstance) {
         try {
             if (!req.params.id ) throw "Missing parameters";
             const basket = await Basket_Classe.getBasket(req.headers.authorization!, parseInt(req.params.id));
-            reply.status(200).send({basket});
+            reply.status(200).send(basket);
         } catch (error) {
             console.error(error);
             reply.status(500).send(error);

@@ -1,14 +1,38 @@
-<p-sidebar [(visible)]="visibleSidebar5" [fullScreen]="true" [baseZIndex]="10000">
-    <a>Test</a>
-    <p-divider></p-divider>
-    <a>Test</a>
-    <p-divider></p-divider>
-    <a>Test</a>
-    <p-divider></p-divider>
 
-</p-sidebar>
-<div class="bg-primary-reverse header">
-    <p-button type="button" class="mr-2 " (click)="visibleSidebar5 = true" icon="pi pi-th-large"></p-button>
-    <p>Easy Commerce</p>
-    <button pButton pRipple type="button" icon="pi pi-power-off" class="p-button-danger" (click)="logout()"></button>
+
+<div class="card">
+    <p-dataView #dv [value]="items" [paginator]="true" [rows]="9" layout="grid">
+        <!-- <ng-template let-product pTemplate="listItem">
+            <div class="col-12">
+                <div class="product-list-item">
+                    <img [src]="product.picture" [alt]="product.name" style="width: 300px; height: 300px;"/>
+                    <div class="product-list-detail">
+                        <div class="product-name">{{product.name}}</div>
+                        <div class="product-description">{{product.description}}</div>
+                    </div>
+                    <div class="product-list-action">
+                        <span class="product-price">{{product.price}}€</span>
+                        <p-button icon="pi pi-shopping-cart" [disabled]="product.quantity === 0"></p-button>
+                    </div>
+                </div>
+            </div>
+        </ng-template> -->
+        <ng-template let-product pTemplate="gridItem">
+            <div class="col-12 md:col-4">
+                <div class="product-grid-item card bg-primary-reverse">
+                    <div class="product-grid-item-content ">
+                        <div class="product-name"><h3>{{product.name}}</h3></div>
+                        <img [src]="product.picture" [alt]="product.name" style="width: 300px; height: 300px;"/>
+                    </div>
+                    <p-divider></p-divider>
+                    <div class="product-description">{{product.description}}</div>
+                    <p-divider></p-divider>
+                    <div class="product-grid-item-bottom ">
+                        <span class="product-price">{{product.price}}€</span>
+                        <p-button icon="pi pi-shopping-cart" [disabled]="product.quantity === 0"></p-button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataView>
 </div>

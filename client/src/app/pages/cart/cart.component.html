@@ -1,1 +1,10 @@
-<p>cart works!</p>
+<div style="display: flex; justify-content: center; text-align: center; margin-top: 40px" *ngFor="let cart of carts">
+    <p-card header="Mon panier" [style]="{'width': '20rem', 'margin-bottom': '2em'}">
+        <p *ngFor="let item of cart.items">{{item.id | itemIdToString | async}} : {{item.quantity}} &nbsp;&nbsp;<i class="pi pi-minus" ></i>&nbsp;&nbsp;<i class="pi pi-plus"></i></p>
+        <p>status : {{cart.ordered ? "commandé" : "pas encore commandé"}}</p>
+        <p-button label="Annuler la commande" icon="pi pi-times" styleClass="p-button-secondary" *ngIf="cart.ordered; else OrderBlock"></p-button>
+        <ng-template #OrderBlock>
+            <p-button  label="Commander" icon="pi pi-check" styleClass="p-button-secondary"></p-button>
+        </ng-template>
+    </p-card>
+</div>

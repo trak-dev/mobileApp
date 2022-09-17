@@ -77,7 +77,6 @@ export default class User_Classe {
                 return await User_Core.updateUser(id, user);
             } else {
                 user.id = requesting_user.id;
-                user.isadmin = requesting_user.isadmin;
                 return await User_Core.updateUser(requesting_user.id, user);
             }
         } catch (error) {
@@ -116,6 +115,15 @@ export default class User_Classe {
             const user = await User_Core.resetPassword(token, pwd);
             const loginToken = await User_Core.login(user.email, pwd);
             return {token : loginToken, user};
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    static async getByToken(token: string) {
+        try {
+            return await User_Core.getByToken(token);
         } catch (error) {
             console.error(error);
             throw error;

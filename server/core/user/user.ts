@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import config from '../../config';
+import Core_Email from '../mail/mail';
 
 dotenv.config();
 
@@ -92,8 +93,12 @@ export default class User_Core {
 
     static async updateUser(id: number, user: User) {
         try {
-            user.password = await bcrypt.hash(user.password, 10);
-            return await User.update(user, {where: {id: id}});
+            return await User.update({
+                firstname : user.firstname,
+                lastname : user.lastname,
+                email : user.email,
+                pseudo : user.pseudo,
+            }, {where: {id}});
         } catch (error) {
             console.error(error);
             throw "an error occured while updating the user";
@@ -116,6 +121,7 @@ export default class User_Core {
         try {
             const token = await jwt.sign({ id : user.id }, config.jwtSecret, { expiresIn: '1h' });
             user.update({password_token: token}, {where: {id: user.id}});
+            await Core_Email.passwordLostMail(user.email, token);
             return true;
         } catch (error) {
             console.error(error);

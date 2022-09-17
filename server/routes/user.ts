@@ -68,9 +68,10 @@ async function userRoutes (router: FastifyInstance) {
 
       router.patch<{Params: {id : string}, Body: User}>('/:id', async (req, reply) => {
         try {
-          if (!parseInt(req.params.id) || !req.body || !req.body.firstname || !req.body.lastname || !req.body.email || !req.body.password) throw "Missing parameters";
+          if (!req.params.id || !req.body || !req.body.firstname || !req.body.lastname || !req.body.email) throw "Missing parameters";
           const { firstname, lastname, email, password, pseudo } = req.body;
           const user = new User({
+            id : parseInt(req.params.id),
             firstname,
             lastname, 
             email,
@@ -127,6 +128,17 @@ async function userRoutes (router: FastifyInstance) {
           const { password, token } = req.body;
           const loginData = await User_Classe.resetPassword(password, token);
           reply.status(200).send(loginData);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
+        }
+      
+      });
+
+      router.get('/', async (req, reply) => {
+        try {
+          const user = await User_Classe.getByToken(req.headers.authorization!);
+          reply.status(200).send(user);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);

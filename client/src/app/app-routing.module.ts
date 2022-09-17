@@ -9,6 +9,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { HomeComponent } from './pages/home/home.component';
 import { PasswordLostComponent } from './pages/password-lost/password-lost.component';
 import { AuthGuardService } from './services/authGuard/auth-guard.service';
+import { AccountComponent } from './pages/account/account.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", redirectTo: "/login" },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: "cart", component: CartComponent, canActivate: [AuthGuardService] },
   { path: "password-lost", component: PasswordLostComponent },
   { path: "admin", component: AdminComponent, canActivate: [AuthGuardService] },
+  { path: "account", component: AccountComponent, canActivate: [AuthGuardService] },
   { path: "**", component: NotFoundComponent },
 ];
 

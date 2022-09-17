@@ -7,6 +7,7 @@ import UserModel from '../../models/user.model';
 export class GlobalService {
 
   user : UserModel = new UserModel();
+  token = `Bearer ${localStorage.getItem('token')}`;
 
   constructor() { }
 }

@@ -1,5 +1,18 @@
-.header {
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px 20px 20px 20px;
+    margin: 0 20px 20px 20px;
+    border-radius: 5px;
+}
+
+.product-grid-item-bottom {
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
 }

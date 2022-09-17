@@ -1,14 +1,12 @@
 import fastify from 'fastify';
 import { Sequelize } from 'sequelize-typescript';
 import User from './models/user.model.t';
-import dotenv from 'dotenv';
 import config from './config';
 import Item from './models/item.model.t';
 import Basket from './models/basket.model.t';
 import Order from './models/order.model.t';
 import cors from '@fastify/cors'
 
-dotenv.config();
 
 const dbuser = config.database.user;
 const host = config.database.host;

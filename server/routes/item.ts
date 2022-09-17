@@ -17,7 +17,7 @@ async function itemRoutes (router: FastifyInstance) {
                 quantity
             });
             const createdItem = await Item_Classe.add(newItem, req.headers.authorization!);
-            reply.status(200).send({createdItem});
+            reply.status(200).send(createdItem);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);
@@ -27,7 +27,7 @@ async function itemRoutes (router: FastifyInstance) {
       router.get('/', async (req, reply) => {
         try {
             const allItems = await Item_Classe.getAll(req.headers.authorization!);
-            reply.status(200).send({allItems});
+            reply.status(200).send(allItems);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);
@@ -38,7 +38,7 @@ async function itemRoutes (router: FastifyInstance) {
         try {
           if (!parseInt(req.params.id)) throw "Missing parameters";
             const item = await Item_Classe.getById(parseInt(req.params.id), req.headers.authorization!);
-            reply.status(200).send({item});
+            reply.status(200).send(item);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);
@@ -49,7 +49,7 @@ async function itemRoutes (router: FastifyInstance) {
         try {
           if (!parseInt(req.params.id)) throw "Missing parameters";
             const item = await Item_Classe.deleteItem(parseInt(req.params.id), req.headers.authorization!);
-            reply.status(200).send({item});
+            reply.status(200).send(item);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);
