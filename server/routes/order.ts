@@ -5,11 +5,11 @@ import Order from '../models/order.model.t';
 
 async function orderRoutes (router: FastifyInstance) {
 
-    router.post<{Body : Order}>('/', async (req, reply) => {
+    router.put<{Body : {basket_id : string }}>('/', async (req, reply) => {
         try {
-          if (!req.body || !req.body.user_id || !req.body.basket_id || !req.body.address) throw "Missing parameters";
-          const order = req.body;
-          const orderCreated = await Order_Classe.createNewOrder(req.headers.authorization!, order);
+          if (!req.body || !req.body.basket_id) throw "Missing parameters";
+          const basket_id = parseInt(req.body.basket_id);
+          const orderCreated = await Order_Classe.createNewOrder(req.headers.authorization!, basket_id);
           reply.status(200).send({orderCreated});
         } catch (error) {
           console.error(error);
@@ -23,7 +23,7 @@ async function orderRoutes (router: FastifyInstance) {
           const deliveredOrder = await Order_Classe.deliverOrder(req.headers.authorization!, parseInt(req.params.id));
           reply.status(200).send({deliveredOrder});
         } catch (error) {
-          console.error(error);
+          console.error(error);1
           reply.status(500).send(error);
         }
       });

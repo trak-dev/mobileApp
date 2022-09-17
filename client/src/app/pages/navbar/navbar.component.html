@@ -1,7 +1,9 @@
 <p-sidebar [(visible)]="visibleSidebar5" [fullScreen]="true" [baseZIndex]="10000">
+    <a routerLink="/home" (click)="visibleSidebar5 = false">Accueil</a>
+    <p-divider></p-divider>
     <a routerLink="/cart" (click)="visibleSidebar5 = false">Mes Paniers</a>
     <p-divider></p-divider>
-    <a routerLink="/commands" (click)="visibleSidebar5 = false">Mes commandes</a>
+    <a routerLink="/orders" (click)="visibleSidebar5 = false">Mes commandes</a>
     <p-divider></p-divider>
     <a routerLink="/account" (click)="visibleSidebar5 = false">Mon compte</a>
     <p-divider></p-divider>
@@ -9,6 +11,6 @@
 
 <div class="bg-primary-reverse header">
     <p-button type="button" class="mr-2 " (click)="visibleSidebar5 = true" icon="pi pi-th-large"></p-button>
-    <p>Easy Commerce</p>
+    <p routerLink="/home" style="cursor : pointer;">Easy Commerce</p>
     <button pButton pRipple type="button" icon="pi pi-power-off" class="p-button-danger" (click)="logout()"></button>
 </div>

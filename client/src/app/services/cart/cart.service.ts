@@ -31,4 +31,22 @@ export class CartService {
       throw error;
     }
   }
+
+  async placeOrder(basket_id: number) {
+    try {
+      await this._http.put(`http://localhost:8080/orders`, {basket_id}, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async cancelOrder(basket_id: number) {
+    try {
+      await this._http.delete(`http://localhost:8080/orders/${basket_id}`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
 }

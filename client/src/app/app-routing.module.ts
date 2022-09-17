@@ -1,3 +1,4 @@
+import { OrdersComponent } from './pages/orders/orders.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { ProductComponent } from './pages/product/product.component';
 import { CartComponent } from './pages/cart/cart.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: "password-lost", component: PasswordLostComponent },
   { path: "admin", component: AdminComponent, canActivate: [AuthGuardService] },
   { path: "account", component: AccountComponent, canActivate: [AuthGuardService] },
+  { path: "orders", component: OrdersComponent, canActivate: [AuthGuardService] },
   { path: "**", component: NotFoundComponent },
 ];
 

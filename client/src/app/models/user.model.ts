@@ -7,4 +7,5 @@ export default class UserModel {
     password_token?: string
     pseudo?: string
     isadmin?: boolean
+    address?: string
   }

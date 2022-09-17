@@ -12,8 +12,15 @@ export default class Basket_Classe {
             const item = await Item_Core.getById(object_id);
             if (!item) throw "Item does not exist";
             if (item.quantity < quantity) throw "Not enough quantity to create the basket";
-            const basket = await Basket_Core.createNewBasket(item.id, quantity, user.id);
-            return basket;
+            const active_baskets = await Basket_Core.getActiveBaskets(user.id);
+            if (active_baskets[0]) {
+                await Basket_Core.updateActiveBasket(user.id, active_baskets[0], object_id, quantity);
+            } else {
+                await Basket_Core.createNewBasket(item.id, quantity, user.id);
+            }
+            item.quantity -= quantity;
+            await Item_Core.updateItem(item);
+            return true;
         } catch (error) {
             throw error;
         }

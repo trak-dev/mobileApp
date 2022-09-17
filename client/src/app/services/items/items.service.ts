@@ -18,4 +18,13 @@ export class ItemsService {
       throw "Error getting items";
     }
   }
+
+  async addToCart(object_id: number, quantity: number) {
+    try {
+      return (await this._http.post("http://localhost:8080/baskets", {object_id, quantity}, {headers: new HttpHeaders().set("Authorization", this._global.token!)}).toPromise()) as ItemModel[];
+    } catch (error) {
+      console.error(error);
+      throw "Error adding to cart";
+    }
+  }
 }

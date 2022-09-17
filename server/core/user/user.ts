@@ -93,11 +93,13 @@ export default class User_Core {
 
     static async updateUser(id: number, user: User) {
         try {
+            console.log(user)
             return await User.update({
                 firstname : user.firstname,
                 lastname : user.lastname,
                 email : user.email,
                 pseudo : user.pseudo,
+                address : user.address,
             }, {where: {id}});
         } catch (error) {
             console.error(error);

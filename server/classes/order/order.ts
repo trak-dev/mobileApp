@@ -1,15 +1,19 @@
 import Order from '../../models/order.model.t';
 import Order_Core from '../../core/order/order';
 import User_Core from '../../core/user/user';
+import Basket_Core from '../../core/basket/basket';
 
 
 export default class Order_Classe {
     
-    static async createNewOrder(token: string, order: Order) {
+    static async createNewOrder(token: string, basket_id: number) {
         try {
             const user = await User_Core.getByToken(token);
-            order.user_id = user.id;
-            const orderCreated = await Order_Core.createNewOrder(order);
+            const basket = await Basket_Core.getBasket(user.id, basket_id);
+            if (!basket) throw "Basket does not exist";
+            if (basket.ordered || basket.hidden) throw "Basket is already delivered";
+            if (basket.user_id !== user.id) throw "Basket does not belong to the user";
+            const orderCreated = await Order_Core.createNewOrder(user, basket);
             return orderCreated;
         } catch (error) {
             console.error(error);
