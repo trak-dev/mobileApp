@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
   constructor(private _global: GlobalService, private _toast: ToastrService, private _account: AccountsService) { }
 
   ngOnInit(): void {
-    console.log("yes");
     if (this._global.user.id || localStorage.getItem("token")) {
       window.location.href = "/home";
     }
