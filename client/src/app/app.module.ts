@@ -29,6 +29,7 @@ import { CardModule } from 'primeng/card';
 import { ItemIdToStringPipe } from './pipes/item-id-to-string.pipe';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     }),
     HttpClientModule,
     CardModule,
-    InputNumberModule
+    InputNumberModule,
+    IonicModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

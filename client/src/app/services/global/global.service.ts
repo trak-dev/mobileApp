@@ -7,6 +7,7 @@ import UserModel from '../../models/user.model';
 export class GlobalService {
 
   user : UserModel = new UserModel();
+  base_url = "http://157.230.121.251";
   token = `Bearer ${localStorage.getItem('token')}`;
 
   constructor() { }

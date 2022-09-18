@@ -13,7 +13,7 @@ export class CartService {
 
   async getCart(){
     try {
-      const basket = await this._http.get("http://localhost:8080/baskets", {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      const basket = await this._http.get(`${this._global.base_url}/baskets`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
       return basket as BasketModel[];
     } catch (error) {
       console.error(error);
@@ -23,7 +23,7 @@ export class CartService {
 
   async idToName(id: number) {
     try {
-      const item = await this._http.get(`http://localhost:8080/items/${id}`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      const item = await this._http.get(`${this._global.base_url}/items/${id}`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
       if (item) return (item as ItemModel).name;
       return false;
     } catch (error) {
@@ -34,7 +34,7 @@ export class CartService {
 
   async placeOrder(basket_id: number) {
     try {
-      await this._http.put(`http://localhost:8080/orders`, {basket_id}, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      await this._http.put(`${this._global.base_url}/orders`, {basket_id}, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
     } catch (error) {
       console.error(error);
       throw error;
@@ -43,7 +43,7 @@ export class CartService {
 
   async cancelOrder(basket_id: number) {
     try {
-      await this._http.delete(`http://localhost:8080/orders/${basket_id}`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      await this._http.delete(`${this._global.base_url}/orders/${basket_id}`, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
     } catch (error) {
       console.error(error);
       throw error;
@@ -52,7 +52,7 @@ export class CartService {
 
   async updateQuantity(basket: BasketModel) {
     try {
-      await this._http.patch(`http://localhost:8080/baskets`, basket, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      await this._http.patch(`${this._global.base_url}/baskets`, basket, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
     } catch (error) {
       console.error(error);
       throw error;

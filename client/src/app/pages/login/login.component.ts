@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   constructor(private _global: GlobalService, private _toast: ToastrService, private _account: AccountsService) { }
 
   ngOnInit(): void {
+    console.log("yes");
     if (this._global.user.id || localStorage.getItem("token")) {
       window.location.href = "/home";
     }
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem("token", loginData.token);
         window.location.href = "/home";
       } catch (error : any) {
-        console.warn(typeof error.error === "string");
+        console.error(error);
+        console.log("azezaeazeazeaze")
         if (typeof error.error === "string") {
           this._toast.error(error.error, "Erreur");
         } else {

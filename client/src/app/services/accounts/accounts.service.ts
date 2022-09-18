@@ -11,8 +11,9 @@ export class AccountsService {
   constructor(private _http: HttpClient, private _global: GlobalService) { }
 
   async login(email: string, password: string) {
-    try {      
-      const loginData = await this._http.post("http://localhost:8080/users/login", {email, password}).toPromise();
+    try {    
+      console.log(`${this._global.base_url}/users/login`);  
+      const loginData = await this._http.post(`${this._global.base_url}/users/login`, {email, password}).toPromise();
       console.log(loginData);
       return loginData as {token: string, user: UserModel}; 
     } catch (error) {
@@ -22,7 +23,7 @@ export class AccountsService {
 
   async getbyToken(token: string) {
     try {
-      const user = await this._http.get("http://localhost:8080/users", {headers: new HttpHeaders().set("Authorization", token)}).toPromise();
+      const user = await this._http.get(`${this._global.base_url}/users`, {headers: new HttpHeaders().set("Authorization", token)}).toPromise();
       return user as UserModel;
     } catch (error) {
       throw error;
@@ -38,7 +39,7 @@ export class AccountsService {
 
   async register(user: UserModel) {
     try {
-      const registerData = await this._http.post("http://localhost:8080/users/register", user).toPromise();
+      const registerData = await this._http.post(`${this._global.base_url}/users/register`, user).toPromise();
       return registerData as {token: string, user: UserModel};
     } catch (error) {
       throw error;
@@ -47,7 +48,7 @@ export class AccountsService {
 
   async recoverPassword(email: string) {
     try {
-      return await this._http.patch("http://localhost:8080/users/recover-password", {email}).toPromise();
+      return await this._http.patch(`${this._global.base_url}/users/recover-password`, {email}).toPromise();
     } catch (error) {
       throw error;
     }
@@ -55,7 +56,7 @@ export class AccountsService {
 
   async resetPassword(token: string, password: string) {
     try {
-      const loginData = await this._http.patch("http://localhost:8080/users/reset-password", {token, password}).toPromise();
+      const loginData = await this._http.patch(`${this._global.base_url}/users/reset-password`, {token, password}).toPromise();
       return loginData as {token: string, user: UserModel};
     } catch (error) {
       throw error;
@@ -64,7 +65,7 @@ export class AccountsService {
 
   async update(user: UserModel) {
     try {
-      const updatedUser = await this._http.patch(`http://localhost:8080/users/${user.id}`, user, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
+      const updatedUser = await this._http.patch(`${this._global.base_url}/users/${user.id}`, user, {headers: new HttpHeaders().set("Authorization", this._global.token)}).toPromise();
       return updatedUser as UserModel;
     } catch (error) {
       throw error;

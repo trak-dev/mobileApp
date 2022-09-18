@@ -12,7 +12,7 @@ export class ItemsService {
 
   async getItems() {
     try {
-      return (await this._http.get("http://localhost:8080/items", {headers: new HttpHeaders().set("Authorization", this._global.token!)}).toPromise()) as ItemModel[];
+      return (await this._http.get(`${this._global.base_url}/items`, {headers: new HttpHeaders().set("Authorization", this._global.token!)}).toPromise()) as ItemModel[];
     } catch (error) {
       console.error(error);
       throw "Error getting items";
@@ -21,7 +21,7 @@ export class ItemsService {
 
   async addToCart(object_id: number, quantity: number) {
     try {
-      return (await this._http.post("http://localhost:8080/baskets", {object_id, quantity}, {headers: new HttpHeaders().set("Authorization", this._global.token!)}).toPromise()) as ItemModel[];
+      return (await this._http.post(`${this._global.base_url}/baskets`, {object_id, quantity}, {headers: new HttpHeaders().set("Authorization", this._global.token!)}).toPromise()) as ItemModel[];
     } catch (error) {
       console.error(error);
       throw "Error adding to cart";
