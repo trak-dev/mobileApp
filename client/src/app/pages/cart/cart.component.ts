@@ -18,7 +18,7 @@ export class CartComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       const carts = await this._cartService.getCart();
-      this.cart = carts[0];
+      this.cart = carts.filter((cart: BasketModel) => !cart.ordered )[0];
     } catch (error) {
       console.error(error);
     }

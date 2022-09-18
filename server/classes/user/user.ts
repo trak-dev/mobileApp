@@ -13,7 +13,7 @@ export default class User_Classe {
             return {token, user: newuser};
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de l'enregistrement";
+            throw error;
         }
     }
 
@@ -24,7 +24,7 @@ export default class User_Classe {
             return {token, user};
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la connexion";
+            throw error;
         }
     }
 
@@ -38,7 +38,7 @@ export default class User_Classe {
             }
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la récupération de l'utilisateur";
+            throw error;
         }
     }
 
@@ -55,7 +55,7 @@ export default class User_Classe {
             if (typeof error === "string") {
              throw error;
             } else {
-                throw "Erreur lors de la récupération de la liste des utilisateurs";
+                throw error;
             }
         }
     }
@@ -70,7 +70,7 @@ export default class User_Classe {
             }
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la suppression de l'utilisateur";
+            throw error;
         }
     }
 
@@ -85,7 +85,7 @@ export default class User_Classe {
             }
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la mise à jour de l'utilisateur";
+            throw error;
         }
     }
 
@@ -99,7 +99,21 @@ export default class User_Classe {
             }
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la vérification de l'utilisateur";
+            throw error;
+        }
+    }
+
+    static async isAdminLoggedIn(token: string) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (user && user.isadmin) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
     }
 
@@ -109,7 +123,7 @@ export default class User_Classe {
             return await User_Core.recoverPassword(User);
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la récupération du mot de passe";
+            throw error;
         }
     }
 
@@ -121,7 +135,7 @@ export default class User_Classe {
             return {token : loginToken, user};
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la réinitialisation du mot de passe";
+            throw error;
         }
     }
 
@@ -130,7 +144,22 @@ export default class User_Classe {
             return await User_Core.getByToken(token);
         } catch (error) {
             console.error(error);
-            throw "Erreur lors de la récupération de l'utilisateur";
+            throw error;
+        }
+    }
+    static async toggleAdmin(token: string, user_id: number) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (user.isadmin) {
+                const user_to_toggle = await User_Core.getbyId(user_id);
+                user_to_toggle.isadmin = !user_to_toggle.isadmin;
+                return await User_Core.updateUser(user_id, user_to_toggle);
+            } else {
+                throw "Vous n'etes pas autorisés à effectuer cette action";
+            }
+        } catch (error) {
+            console.error(error);
+            throw error;
         }
     }
 }

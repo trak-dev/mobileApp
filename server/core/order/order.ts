@@ -4,7 +4,7 @@ import Item_Core from '../../core/item/item';
 import basket from '../../models/basket.model.t';
 import User from '../../models/user.model.t';
 
-export default class User_Core {
+export default class Order_Core {
     
     static async createNewOrder(user : User,basket : basket) {
         console.log("basket", basket.id, "user", user.address);
@@ -16,7 +16,6 @@ export default class User_Core {
                 delivered: false,
                 address: user.address,
             });
-            console.log("order", order);
             const orderCreated = await order.save();
             basket.ordered = true;
             await Basket_Core.updateBasket(order.user_id, basket);
@@ -87,6 +86,30 @@ export default class User_Core {
             console.error(error);
             if (typeof(error) === "string") throw error;
             throw "Error while cancelling order";
+        }
+    }
+
+    static async getAllOrders() {
+        try {
+            const orders = await Order.findAll();
+            return orders;
+        } catch (error) {
+            console.error(error);
+            if (typeof(error) === "string") throw error;
+            throw "Error while getting orders";
+        }
+    }
+
+    static async deleteOrderAdmin(id: number) {
+        try {
+            const order = await Order.findOne({where: {id}});
+            if (!order) throw "No order to delete";
+            await order.destroy();
+            return true;
+        } catch (error) {
+            console.error(error);
+            if (typeof(error) === "string") throw error;
+            throw "Error while deleting orders";
         }
     }
 

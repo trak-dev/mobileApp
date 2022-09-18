@@ -44,6 +44,18 @@ export default class Order_Classe {
         }
     }
 
+    static async getOrdersAdmin(token: string) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (!user.isadmin) throw "Vous devez etre admin !";
+            const orders = await Order_Core.getAllOrders();
+            return orders;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
     static async getOrder(token: string, id: number) {
         try {
             const user = await User_Core.getByToken(token);
@@ -59,6 +71,19 @@ export default class Order_Classe {
         try {
             const user = await User_Core.getByToken(token);
             const order = await Order_Core.cancelOrder(user.id, id);
+            return order;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+
+    
+    static async deleteOrderAdmin(token: string, id: number) {
+        try {
+            const user = await User_Core.getByToken(token);
+            if (!user.isadmin) throw "Vous devez etre admin !";
+            const order = await Order_Core.deleteOrderAdmin(id);
             return order;
         } catch (error) {
             console.error(error);

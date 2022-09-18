@@ -111,6 +111,17 @@ async function userRoutes (router: FastifyInstance) {
       
       });
 
+      router.get('/isAdminConnected', async (req, reply) => {
+        try {
+          const logged = await User_Classe.isAdminLoggedIn(req.headers.authorization! );
+          reply.status(200).send({logged});
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
+        }
+      
+      });
+
       router.patch<{Body: { email : string}}>('/recover-password', async (req, reply) => {
         try {
           if (!req.body || !req.body.email) throw "Missing parameters";
@@ -141,6 +152,18 @@ async function userRoutes (router: FastifyInstance) {
         try {
           const user = await User_Classe.getByToken(req.headers.authorization!);
           reply.status(200).send(user);
+        } catch (error) {
+          console.error(error);
+          reply.status(500).send(error);
+        }
+      
+      });
+
+      router.patch<{Params : {id: string}}>('/:id/toggle-admin', async (req, reply) => {
+        try {
+          if (!req.params.id) throw "Missing parameters";
+          await User_Classe.toggleAdmin(req.headers.authorization!, parseInt(req.params.id));
+          reply.status(200).send(true);
         } catch (error) {
           console.error(error);
           reply.status(500).send(error);
