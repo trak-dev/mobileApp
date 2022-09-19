@@ -33,6 +33,9 @@ export default class Order_Core {
             if (!order) throw "No order to deliver";
             order.delivered = true;
             await order.save();
+            const basket = await Basket_Core.getBasket(order.user_id, order.basket_id) as basket;
+            if (basket) basket.hidden = true;
+            await Basket_Core.updateBasket(order.user_id, basket);
             return order;
         } catch (error) {
             console.error(error);
